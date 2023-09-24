@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
 
 class BotonAzul extends StatelessWidget {
-  String emailCtrl;
-  String passCtrl;
+  final String text;
+  final Function() onPressed;
 
-  BotonAzul({super.key. email});
+  BotonAzul({super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        print(emailText);
-        print(passText);
-      },
       child: Container(
         width: double.infinity,
         height: 55,
-        child: Center(child: Text('Ingresar')),
+        child: Center(child: Text(text)),
       ),
       style: ElevatedButton.styleFrom(
         elevation: 2,
         shape: StadiumBorder(),
       ),
+      onPressed: onPressed,
     );
   }
 }

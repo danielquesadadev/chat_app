@@ -7,24 +7,30 @@ import 'package:flutter/material.dart';
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
-      child: Scaffold(
-        backgroundColor: Color(0xffF2F2F2),
-        resizeToAvoidBottomInset: false,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Logo(),
-            _Form(),
-            Labels(),
-            Padding(
-              padding: EdgeInsets.only(bottom: 10),
-              child: Text(
-                'Términos y condiciones de uso',
-                style: TextStyle(fontWeight: FontWeight.w200),
-              ),
+    return Scaffold(
+      backgroundColor: Color(0xffF2F2F2),
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.95,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Logo(),
+                _Form(),
+                Labels(),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    'Términos y condiciones de uso',
+                    style: TextStyle(fontWeight: FontWeight.w200),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -61,7 +67,13 @@ class __FormState extends State<_Form> {
             textController: passCtrl,
             isPasword: true,
           ),
-          BotonAzul(emailCtrl, passCtrl)
+          BotonAzul(
+            text: 'Ingresar',
+            onPressed: () {
+              print(emailCtrl);
+              print(passCtrl);
+            },
+          )
         ],
       ),
     );
