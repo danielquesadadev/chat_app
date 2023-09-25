@@ -18,9 +18,15 @@ class LoginPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Logo(),
+                Logo(
+                  titulo: 'Messenger',
+                ),
                 _Form(),
-                Labels(),
+                Labels(
+                  ruta: 'register',
+                  titulo: '¡Crear una ahora!',
+                  subTitulo: '¿No tienes cuenta?',
+                ),
                 Padding(
                   padding: EdgeInsets.only(bottom: 10),
                   child: Text(
