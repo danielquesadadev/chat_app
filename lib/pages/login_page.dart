@@ -1,21 +1,26 @@
+import 'package:chat_app/helpers/show_alerts.dart';
+import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/widgets/boton_azul.dart';
 import 'package:chat_app/widgets/custom_input.dart';
 import 'package:chat_app/widgets/labels.dart';
 import 'package:chat_app/widgets/logo.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF2F2F2),
+      backgroundColor: const Color(0xffF2F2F2),
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Container(
+          physics: const BouncingScrollPhysics(),
+          child: SizedBox(
             height: MediaQuery.of(context).size.height * 0.95,
-            child: Column(
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Logo(
@@ -44,21 +49,23 @@ class LoginPage extends StatelessWidget {
 }
 
 class _Form extends StatefulWidget {
-  const _Form({super.key});
+  const _Form();
 
   @override
   State<_Form> createState() => __FormState();
 }
 
 class __FormState extends State<_Form> {
+  final emailCtrl = TextEditingController();
+  final passCtrl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    final emailCtrl = TextEditingController();
-    final passCtrl = TextEditingController();
+    final authService = Provider.of<AuthService>(context);
 
     return Container(
-      margin: EdgeInsets.only(top: 40),
-      padding: EdgeInsets.symmetric(horizontal: 50),
+      margin: const EdgeInsets.only(top: 40),
+      padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: <Widget>[
           CustomInput(
@@ -75,10 +82,21 @@ class __FormState extends State<_Form> {
           ),
           BotonAzul(
             text: 'Ingresar',
-            onPressed: () {
-              print(emailCtrl);
-              print(passCtrl);
-            },
+            onPressed: authService.authenticating
+                ? null
+                : () async {
+                    FocusScope.of(context).unfocus();
+                    final loginSuccess = await authService.login(
+                        emailCtrl.text.trim(), passCtrl.text.trim());
+
+                    if (loginSuccess) {
+                      // Redirect
+                    } else {
+                      // Show alert
+                      showAlert(context, 'Login incorrecto',
+                          'Por favor, revise sus credenciales');
+                    }
+                  },
           )
         ],
       ),

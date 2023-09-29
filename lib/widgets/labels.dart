@@ -18,12 +18,12 @@ class Labels extends StatelessWidget {
         children: [
           Text(
             subTitulo,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.black54,
                 fontSize: 15,
                 fontWeight: FontWeight.w300),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           GestureDetector(

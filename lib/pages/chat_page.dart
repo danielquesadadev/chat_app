@@ -5,15 +5,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
+  const ChatPage({super.key});
+
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
-  final _textController = new TextEditingController();
-  final _focusNode = new FocusNode();
+  final _textController = TextEditingController();
+  final _focusNode = FocusNode();
 
-  List<ChatMessage> _messages = [];
+  final List<ChatMessage> _messages = [];
 
   bool _isWritting = false;
 
@@ -22,16 +24,16 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Center(
+        title: const Center(
           child: Column(
             children: [
               CircleAvatar(
+                backgroundColor: Colors.blueAccent,
+                maxRadius: 14,
                 child: Text(
                   'NO',
                   style: TextStyle(fontSize: 12),
                 ),
-                backgroundColor: Colors.blueAccent,
-                maxRadius: 14,
               ),
               SizedBox(
                 height: 3,
@@ -51,13 +53,13 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
           children: [
             Flexible(
               child: ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: _messages.length,
                 itemBuilder: (context, index) => _messages[index],
                 reverse: true,
               ),
             ),
-            Divider(height: 1),
+            const Divider(height: 1),
             Container(
               color: Colors.white,
               child: _inputChat(),
@@ -71,7 +73,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   Widget _inputChat() {
     return SafeArea(
         child: Container(
-      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
       child: Row(
         children: [
           Flexible(
@@ -81,14 +83,14 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
               onChanged: (texto) {
                 //TODO: cuando hay un valor, para mostrarlo
                 setState(() {
-                  if (texto.trim().length > 0) {
+                  if (texto.trim().isNotEmpty) {
                     _isWritting = true;
                   } else {
                     _isWritting = false;
                   }
                 });
               },
-              decoration: InputDecoration.collapsed(hintText: 'Enviar mensaje'),
+              decoration: const InputDecoration.collapsed(hintText: 'Enviar mensaje'),
               focusNode: _focusNode,
             ),
           ),
@@ -98,17 +100,17 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
           Container(
             child: Platform.isIOS
                 ? CupertinoButton(
-                    child: Text('Enviar'),
+                    child: const Text('Enviar'),
                     onPressed: () {},
                   )
                 : Container(
-                    margin: EdgeInsets.symmetric(horizontal: 2),
+                    margin: const EdgeInsets.symmetric(horizontal: 2),
                     child: IconTheme(
                       data: IconThemeData(color: Colors.blue[400]),
                       child: IconButton(
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
-                        icon: Icon(Icons.send),
+                        icon: const Icon(Icons.send),
                         color: Colors.blue[400],
                         onPressed: _isWritting
                             ? () => _handeSubmit(_textController.text.trim())
@@ -123,7 +125,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   }
 
   _handeSubmit(String texto) {
-    if (texto.length == 0) return;
+    if (texto.isEmpty) return;
 
     print(texto);
 

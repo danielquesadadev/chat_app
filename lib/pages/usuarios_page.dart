@@ -5,12 +5,14 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:chat_app/models/usuarios.dart';
 
 class UsuariosPage extends StatefulWidget {
+  const UsuariosPage({super.key});
+
   @override
   State<UsuariosPage> createState() => _UsuariosPageState();
 }
 
 class _UsuariosPageState extends State<UsuariosPage> {
-  RefreshController _refreshController =
+  final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   final usuarios = [
@@ -30,17 +32,17 @@ class _UsuariosPageState extends State<UsuariosPage> {
           style: TextStyle(color: Colors.black54),
         ),
         leading: IconButton(
-          icon: Icon(Icons.exit_to_app, color: Colors.black54),
+          icon: const Icon(Icons.exit_to_app, color: Colors.black54),
           onPressed: () {},
         ),
         actions: [
           Container(
-              margin: EdgeInsets.only(right: 10),
+              margin: const EdgeInsets.only(right: 10),
               child: /* Icon(
                 Icons.check_circle_rounded,
                 color: Colors.blue[400],
               ) */
-                  Icon(
+                  const Icon(
                 Icons.offline_bolt,
                 color: Colors.red,
               )),
@@ -48,7 +50,6 @@ class _UsuariosPageState extends State<UsuariosPage> {
       ),
       body: SmartRefresher(
         controller: _refreshController,
-        child: _litsViewUsuarios(),
         enablePullDown: true,
         onRefresh: _cargarUsuarios,
         header: WaterDropHeader(
@@ -58,17 +59,18 @@ class _UsuariosPageState extends State<UsuariosPage> {
           ),
           waterDropColor: Colors.blue,
         ),
+        child: _litsViewUsuarios(),
       ),
     );
   }
 
   ListView _litsViewUsuarios() {
     return ListView.separated(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         itemBuilder: (context, i) {
           return _usuarioListTile(usuarios[i]);
         },
-        separatorBuilder: (_, i) => Divider(),
+        separatorBuilder: (_, i) => const Divider(),
         itemCount: usuarios.length);
   }
 
@@ -77,10 +79,10 @@ class _UsuariosPageState extends State<UsuariosPage> {
       title: Text(usuario.nombre),
       subtitle: Text(usuario.email),
       leading: CircleAvatar(
+        backgroundColor: Colors.blue[100],
         child: Text(
           usuario.nombre.substring(0, 2),
         ),
-        backgroundColor: Colors.blue[100],
       ),
       trailing: Container(
         width: 10,
@@ -93,7 +95,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
   }
 
   _cargarUsuarios() async {
-    await Future.delayed(Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 1000));
     _refreshController.refreshCompleted();
   }
 }

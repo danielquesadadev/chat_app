@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ChatMessage extends StatelessWidget {
@@ -31,15 +30,15 @@ class ChatMessage extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: Container(
-        padding: EdgeInsets.all(8),
-        margin: EdgeInsets.only(bottom: 5, left: 50, right: 5),
+        padding: const EdgeInsets.all(8),
+        margin: const EdgeInsets.only(bottom: 5, left: 50, right: 5),
+        decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 35, 113, 192),
+            borderRadius: BorderRadius.circular(20)),
         child: Text(
           message,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
-        decoration: BoxDecoration(
-            color: Color.fromARGB(255, 35, 113, 192),
-            borderRadius: BorderRadius.circular(20)),
       ),
     );
   }
@@ -48,15 +47,15 @@ class ChatMessage extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        padding: EdgeInsets.all(8),
-        margin: EdgeInsets.only(bottom: 5, left: 5, right: 50),
-        child: Text(
-          message,
-          style: TextStyle(color: Colors.black87),
-        ),
+        padding: const EdgeInsets.all(8),
+        margin: const EdgeInsets.only(bottom: 5, left: 5, right: 50),
         decoration: BoxDecoration(
             color: const Color.fromARGB(255, 66, 66, 66),
             borderRadius: BorderRadius.circular(20)),
+        child: Text(
+          message,
+          style: const TextStyle(color: Colors.black87),
+        ),
       ),
     );
   }
