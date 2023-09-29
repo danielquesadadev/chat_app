@@ -1,8 +1,11 @@
+import 'package:chat_app/helpers/show_alerts.dart';
+import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/widgets/boton_azul.dart';
 import 'package:chat_app/widgets/custom_input.dart';
 import 'package:chat_app/widgets/labels.dart';
 import 'package:chat_app/widgets/logo.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -55,6 +58,8 @@ class _Form extends StatefulWidget {
 class __FormState extends State<_Form> {
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+
     final emailCtrl = TextEditingController();
     final passCtrl = TextEditingController();
     final nameCtrl = TextEditingController();
@@ -83,11 +88,26 @@ class __FormState extends State<_Form> {
             isPasword: true,
           ),
           BotonAzul(
-            text: 'Registrarme',
-            onPressed: () {
-              print(emailCtrl);
-              print(passCtrl);
-            },
+            text: 'Ingresar',
+            onPressed: authService.authenticating
+                ? null
+                : () async {
+                    FocusScope.of(context).unfocus();
+                    final registerSuccess = await authService.register(
+                        nameCtrl.text.trim(),
+                        emailCtrl.text.trim(),
+                        passCtrl.text.trim());
+
+                    if (registerSuccess) {
+                      // Redirect
+                      // TODO: Connect w/ socket server
+                      Navigator.pushReplacementNamed(context, 'usuarios');
+                    } else {
+                      // Show alert
+                      showAlert(context, 'Registro fallido',
+                          'Por favor, revise sus credenciales');
+                    }
+                  },
           )
         ],
       ),

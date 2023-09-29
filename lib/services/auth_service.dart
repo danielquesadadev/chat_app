@@ -11,7 +11,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class AuthService with ChangeNotifier {
   late Usuario user;
   bool _authenticating = false;
-
   final _storage = const FlutterSecureStorage();
 
   bool get authenticating => this._authenticating;
@@ -55,7 +54,30 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  Future<bool> register(String email, String password) async {}
+  Future<bool> register(String name, String email, String password) async {
+    this.authenticating = true;
+
+    final data = {'name': name, 'email': email, 'password': password};
+
+    final response = await http.post(
+      Uri.parse('${Enviroment.apiURL}/new'),
+      body: jsonEncode(data),
+      headers: {'Content-type': 'application/json'},
+    );
+
+    this.authenticating = false;
+
+    if (response.statusCode == 200) {
+      final registerResponse = loginResponseFromJson(response.body);
+      this.user = registerResponse.usuario;
+
+      await _saveToken(registerResponse.token);
+
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   Future _saveToken(String token) async {
     return await _storage.write(key: 'token', value: token);
