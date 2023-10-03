@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthService with ChangeNotifier {
-  late Usuario user;
+  late User user;
   bool _authenticating = false;
   final _storage = const FlutterSecureStorage();
 
@@ -44,7 +44,7 @@ class AuthService with ChangeNotifier {
     this.authenticating = false;
     if (response.statusCode == 200) {
       final loginResponse = loginResponseFromJson(response.body);
-      this.user = loginResponse.usuario;
+      this.user = loginResponse.user;
 
       await _saveToken(loginResponse.token);
 
@@ -54,27 +54,53 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  Future<bool> register(String name, String email, String password) async {
+  Future register(String name, String email, String password) async {
     this.authenticating = true;
 
     final data = {'name': name, 'email': email, 'password': password};
 
     final response = await http.post(
-      Uri.parse('${Enviroment.apiURL}/new'),
+      Uri.parse('${Enviroment.apiURL}/login/new'),
       body: jsonEncode(data),
       headers: {'Content-type': 'application/json'},
     );
 
     this.authenticating = false;
 
+    print(response.body);
+
     if (response.statusCode == 200) {
       final registerResponse = loginResponseFromJson(response.body);
-      this.user = registerResponse.usuario;
+      this.user = registerResponse.user;
 
       await _saveToken(registerResponse.token);
 
       return true;
     } else {
+      final respBody = jsonDecode(response.body);
+      return respBody['msg'];
+    }
+  }
+
+  Future<bool> isLoggedIn() async {
+    final token = await _storage.read(key: 'token') ?? '';
+    print(token);
+    final response = await http.get(
+      Uri.parse('${Enviroment.apiURL}/login/renew'),
+      headers: {'Content-type': 'application/json', 'x-token': token},
+    );
+
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      final registerResponse = loginResponseFromJson(response.body);
+      this.user = registerResponse.user;
+
+      await _saveToken(registerResponse.token);
+
+      return true;
+    } else {
+      _logout(token);
       return false;
     }
   }

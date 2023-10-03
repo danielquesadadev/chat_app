@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:chat_app/helpers/show_alerts.dart';
 
 import 'package:chat_app/services/auth_service.dart';
 
@@ -8,6 +7,8 @@ import 'package:chat_app/widgets/boton_azul.dart';
 import 'package:chat_app/widgets/custom_input.dart';
 import 'package:chat_app/widgets/labels.dart';
 import 'package:chat_app/widgets/logo.dart';
+
+import 'package:chat_app/helpers/show_alerts.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

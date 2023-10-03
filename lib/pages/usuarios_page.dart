@@ -1,4 +1,6 @@
+import 'package:chat_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -16,24 +18,30 @@ class _UsuariosPageState extends State<UsuariosPage> {
       RefreshController(initialRefresh: false);
 
   final usuarios = [
-    Usuario(uid: '1', nombre: 'Daniel', email: 'test1@gmail.com', online: true),
-    Usuario(uid: '2', nombre: 'Pedro', email: 'test2@gmail.com', online: true),
-    Usuario(uid: '3', nombre: 'Eva', email: 'test3@gmail.com', online: false),
+    User(uid: '1', name: 'Daniel', email: 'test1@gmail.com', online: true),
+    User(uid: '2', name: 'Pedro', email: 'test2@gmail.com', online: true),
+    User(uid: '3', name: 'Eva', email: 'test3@gmail.com', online: false),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+    final user = authService.user;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
-        title: const Text(
-          'Mi usuario',
+        title: Text(
+          user.name,
           style: TextStyle(color: Colors.black54),
         ),
         leading: IconButton(
           icon: const Icon(Icons.exit_to_app, color: Colors.black54),
-          onPressed: () {},
+          onPressed: () {
+            //TODO: Disconect from socketService
+            Navigator.popAndPushNamed(context, 'login');
+            AuthService.deleteToken();
+          },
         ),
         actions: [
           Container(
@@ -74,14 +82,14 @@ class _UsuariosPageState extends State<UsuariosPage> {
         itemCount: usuarios.length);
   }
 
-  ListTile _usuarioListTile(Usuario usuario) {
+  ListTile _usuarioListTile(User usuario) {
     return ListTile(
-      title: Text(usuario.nombre),
+      title: Text(usuario.name),
       subtitle: Text(usuario.email),
       leading: CircleAvatar(
         backgroundColor: Colors.blue[100],
         child: Text(
-          usuario.nombre.substring(0, 2),
+          usuario.name.substring(0, 2),
         ),
       ),
       trailing: Container(
