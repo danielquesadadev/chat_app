@@ -90,7 +90,8 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                   }
                 });
               },
-              decoration: const InputDecoration.collapsed(hintText: 'Enviar mensaje'),
+              decoration:
+                  const InputDecoration.collapsed(hintText: 'Enviar mensaje'),
               focusNode: _focusNode,
             ),
           ),
@@ -126,8 +127,6 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
   _handeSubmit(String texto) {
     if (texto.isEmpty) return;
-
-    print(texto);
 
     _textController.clear();
     _focusNode.requestFocus();

@@ -67,8 +67,6 @@ class AuthService with ChangeNotifier {
 
     this.authenticating = false;
 
-    print(response.body);
-
     if (response.statusCode == 200) {
       final registerResponse = loginResponseFromJson(response.body);
       this.user = registerResponse.user;
@@ -84,13 +82,10 @@ class AuthService with ChangeNotifier {
 
   Future<bool> isLoggedIn() async {
     final token = await _storage.read(key: 'token') ?? '';
-    print(token);
     final response = await http.get(
       Uri.parse('${Enviroment.apiURL}/login/renew'),
       headers: {'Content-type': 'application/json', 'x-token': token},
     );
-
-    print(response.body);
 
     if (response.statusCode == 200) {
       final registerResponse = loginResponseFromJson(response.body);
