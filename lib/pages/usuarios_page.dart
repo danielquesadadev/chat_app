@@ -1,3 +1,4 @@
+import 'package:chat_app/services/chat_service.dart';
 import 'package:chat_app/services/users_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -91,14 +92,14 @@ class _UsuariosPageState extends State<UsuariosPage> {
         itemCount: users.length);
   }
 
-  ListTile _usersListTile(User usuario) {
+  ListTile _usersListTile(User user) {
     return ListTile(
-      title: Text(usuario.name),
-      subtitle: Text(usuario.email),
+      title: Text(user.name),
+      subtitle: Text(user.email),
       leading: CircleAvatar(
         backgroundColor: Colors.blue[100],
         child: Text(
-          usuario.name.substring(0, 2),
+          user.name.substring(0, 2),
         ),
       ),
       trailing: Container(
@@ -106,8 +107,13 @@ class _UsuariosPageState extends State<UsuariosPage> {
         height: 10,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
-            color: usuario.online ? Colors.green[400] : Colors.red),
+            color: user.online ? Colors.green[400] : Colors.red),
       ),
+      onTap: () {
+        final chatService = Provider.of<ChatService>(context, listen: false);
+        chatService.userFor = user;
+        Navigator.pushNamed(context, 'chat');
+      },
     );
   }
 
